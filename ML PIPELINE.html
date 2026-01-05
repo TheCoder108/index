@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Pipeline - Complete Guide</title>
+    <style>
+        @media print {
+            body { margin: 0; padding: 20px; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .cover-page {
+            text-align: center;
+            padding: 100px 20px;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .cover-page h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .cover-page .subtitle {
+            font-size: 1.5em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+        
+        .cover-page .author {
+            font-size: 1.2em;
+            color: #95a5a6;
+            margin-top: 60px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        
+        table th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .formula {
+            background-color: #e8f4f8;
+            padding: 10px;
+            border-left: 3px solid #3498db;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .example {
+            background-color: #f0f9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .note {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .language-toggle {
+            background-color: #27ae60;
+        }
+        
+        .language-toggle:hover {
+            background-color: #229954;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .toc {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border: none;
+            padding: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            padding: 5px 0;
+        }
+        
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .hinglish {
+            display: none;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls no-print">
+        <button onclick="window.print()">📄 Download PDF</button>
+        <button class="language-toggle" onclick="toggleLanguage()">🌐 Switch to Hinglish</button>
+    </div>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover-page">
+            <h1>ML PIPELINE</h1>
+            <div class="subtitle">Complete Machine Learning Guide</div>
+            <div class="subtitle">English & Hinglish Edition</div>
+            <div class="author">Comprehensive Guide to Feature Engineering, Ensemble Learning, and More</div>
+        </div>
+        <h3 class="name">This Document is Made by Dhruv Joshi.</h3>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#feature-engineering">1. Feature Engineering</a></li>
+                <li><a href="#feature-selection">2. Feature Selection Methodologies</a></li>
+                <li><a href="#dimensionality">3. Dimensionality Reduction</a></li>
+                <li><a href="#ensemble">4. Ensemble Learning</a></li>
+                <li><a href="#hyperparameter">5. Hyperparameter Tuning & Model Evaluation</a></li>
+                <li><a href="#reinforcement">6. Reinforcement Learning</a></li>
+            </ul>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- English Content -->
+        <div class="english-content">
+            <h1 id="feature-engineering">1. Feature Engineering</h1>
+            
+            <div class="section">
+                <h2>Definition</h2>
+                <p><span class="highlight">Feature Engineering</span> is the process of using domain knowledge to create new features or modify existing ones from the raw data to improve the performance of a machine learning model. It is the art and science of preparing the input data features that best represent the underlying problem to the predictive models.</p>
+            </div>
+
+            <div class="section">
+                <h2>Necessity of Feature Engineering</h2>
+                <ul>
+                    <li><strong>Increases Model Performance:</strong> Well-engineered features provide clearer signals to the model, allowing simpler algorithms to achieve better results than complex algorithms on raw data.</li>
+                    <li><strong>Improves Data Quality:</strong> It handles imperfections like missing values and outliers, ensuring data integrity.</li>
+                    <li><strong>Enhances Interpretability:</strong> Creating meaningful, consolidated features can make the final model's decisions easier to understand and explain.</li>
+                    <li><strong>Addresses Algorithmic Constraints:</strong> Techniques like feature scaling are essential for distance-based (KNN, SVM) and gradient-descent-based (Neural Networks, Linear Regression) algorithms.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Feature Engineering Techniques</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Technique</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Cleaning</td>
+                            <td>Imputation</td>
+                            <td>Filling missing values using statistical methods (mean, median, mode) or sophisticated models (KNN, MICE).</td>
+                            <td>Replacing a missing 'Age' value with the median age of the dataset.</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Feature Construction</td>
+                            <td>Aggregation</td>
+                            <td>Combining multiple features into a single, more informative feature.</td>
+                            <td>Converting individual transaction records into a single 'Total Customer Spend' feature.</td>
+                        </tr>
+                        <tr>
+                            <td>Binning/Discretization</td>
+                            <td>Grouping continuous numerical values into discrete bins or categories.</td>
+                            <td>Converting 'Age' (1-100) into categories like 'Child', 'Adult', 'Senior'.</td>
+                        </tr>
+                        <tr>
+                            <td>Polynomial Features</td>
+                            <td>Introducing non-linearity by creating interaction terms or powers of existing features.</td>
+                            <td>If X₁ and X₂ are features, adding X₁ × X₂ or X₁².</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Data Transformation</td>
+                            <td>Scaling/Normalization</td>
+                            <td>Adjusting the scale of numerical features to a standard range.</td>
+                            <td>Standardizing features to a mean of 0 and a standard deviation of 1.</td>
+                        </tr>
+                        <tr>
+                            <td>Encoding</td>
+                            <td>Converting categorical variables into a numerical format suitable for machine learning models.</td>
+                            <td>Using One-Hot Encoding for colors (Red, Blue) or Label Encoding for size (Small, Medium, Large).</td>
+                        </tr>
+                        <tr>
+                            <td>Outlier Handling</td>
+                            <td>Transforming or removing extreme values that can skew model training.</td>
+                            <td>Applying a Log Transformation to heavily skewed features like income.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Advanced Data Preprocessing</h2>
+                
+                <h3>Handling Missing Data</h3>
+                <div class="example">
+                    <strong>Purpose:</strong> To maintain data integrity and prevent model failure.
+                    <ul>
+                        <li><strong>Imputation:</strong> Using Mean/Median (for normally distributed/skewed data), Mode (for categorical), or Advanced Methods like KNN Imputer or MICE (Multiple Imputation by Chained Equations).</li>
+                        <li><strong>Deletion:</strong> Row/Column removal, used only when data loss is minimal.</li>
+                    </ul>
+                </div>
+
+                <h3>Feature Scaling</h3>
+                <div class="note">
+                    <strong>Purpose:</strong> To normalize the contribution of different features, especially for distance-based and gradient-based algorithms.
+                </div>
+                
+                <div class="formula">
+                    <strong>Standardization (Z-Score):</strong><br>
+                    x' = (x - μ) / σ<br>
+                    Transforms data to have μ=0 and σ=1. Ideal for Neural Networks, SVM, and Linear Regression.
+                </div>
+                
+                <div class="formula">
+                    <strong>Normalization (Min-Max):</strong><br>
+                    x' = (x - x_min) / (x_max - x_min)<br>
+                    Scales data to a fixed range (usually [0, 1]). Useful for image processing or algorithms like KNN.
+                </div>
+
+                <h3>Encoding</h3>
+                <ul>
+                    <li><strong>One-Hot Encoding:</strong> Creates a new binary column for each category. Best for non-ordinal features (e.g., color).</li>
+                    <li><strong>Label Encoding:</strong> Assigns an integer to each category. Used for ordinal features (e.g., size: small=1, medium=2).</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="feature-selection">2. Feature Selection Methodologies</h1>
+            
+            <div class="section">
+                <p>Feature selection aims to find the optimal subset of relevant features, reducing overfitting, improving model interpretability, and speeding up training.</p>
+                
+                <h2>A. Filter-Based Approaches</h2>
+                <p>These methods rank features based on statistical metrics, treating the model as a "filter."</p>
+                <ul>
+                    <li><strong>Information Gain / Mutual Information:</strong> Quantifies the dependency between two random variables. Higher mutual information means the feature is more predictive of the target variable.</li>
+                    <li><strong>Chi-Square Test (χ²):</strong> Assesses the independence of two categorical variables. A large χ² statistic suggests that the feature and target are dependent.</li>
+                    <li><strong>Fisher's Score:</strong> Calculates the ratio of the inter-class variance to the intra-class variance. Higher scores indicate better feature separability between classes.</li>
+                </ul>
+
+                <h2>B. Wrapper-Based Methods</h2>
+                <p>These methods wrap the feature selection process around the model, using its performance as the evaluation criterion.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Process</th>
+                            <th>Computational Complexity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Forward Selection</td>
+                            <td>Starts with an empty set of features and greedily adds the feature that results in the greatest model performance improvement until a stopping criterion is met.</td>
+                            <td>O(N²) in the worst case, where N is the number of features.</td>
+                        </tr>
+                        <tr>
+                            <td>Backward Elimination</td>
+                            <td>Starts with all features and iteratively removes the feature whose removal results in the least performance drop.</td>
+                            <td>Similar to Forward Selection, highly dependent on the model complexity.</td>
+                        </tr>
+                        <tr>
+                            <td>Recursive Feature Elimination (RFE)</td>
+                            <td>An iterative process where the model is trained, and features are ranked by importance. The least important features are pruned, and the process repeats.</td>
+                            <td>Requires retraining the model multiple times, making it computationally intensive.</td>
+                        </tr>
+                        <tr>
+                            <td>Exhaustive Feature Selection</td>
+                            <td>Checks all possible combinations of features. For N features, there are 2^N - 1 subsets.</td>
+                            <td>O(2^N) - Impractical for large N (e.g., N=40 is computationally impossible).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>C. Embedded-Based Methods</h2>
+                <p>These techniques integrate feature selection directly into the model training.</p>
+                <ul>
+                    <li><strong>Regularization (Lasso):</strong> The L1 penalty term in Lasso Regression forces the coefficients of the less impactful features to become exactly zero, effectively selecting a subset of features.</li>
+                    <li><strong>Tree-based Algorithms (Random Forest/XGBoost):</strong> These models inherently calculate feature importance based on how much a feature reduces impurity/loss.</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="dimensionality">3. Dimensionality Reduction</h1>
+            
+            <div class="section">
+                <p>Dimensionality reduction is the process of reducing the number of variables by finding a low-dimensional space that preserves the essential characteristics of the high-dimensional data.</p>
+
+                <h2>Principal Component Analysis (PCA)</h2>
+                <div class="example">
+                    <strong>Goal:</strong> To find a lower-dimensional set of bases (Principal Components) that capture the maximum possible variance in the data.<br><br>
+                    <strong>Mechanism:</strong> It works by calculating the covariance matrix of the data and then finding the eigenvectors and eigenvalues. The eigenvectors define the direction of the new axes, and the eigenvalues indicate the magnitude of variance along those axes.<br><br>
+                    <strong>Nature:</strong> It is an unsupervised method, meaning it ignores the class labels of the data points.<br><br>
+                    <strong>Application:</strong> Noise reduction, speeding up model training, and simplifying visualization.
+                </div>
+
+                <h2>Linear Discriminant Analysis (LDA)</h2>
+                <div class="example">
+                    <strong>Goal:</strong> To find a lower-dimensional subspace that maximizes the separation between different classes.<br><br>
+                    <strong>Mechanism:</strong> It seeks to maximize the between-class scatter while simultaneously minimizing the within-class scatter. In essence, it aims to make the classes as distinct as possible in the reduced dimension.<br><br>
+                    <strong>Nature:</strong> It is a supervised method, as it explicitly uses the class labels during the calculation of its axes (linear discriminants).<br><br>
+                    <strong>Constraint:</strong> The maximum number of resulting dimensions it can produce is C-1, where C is the number of classes.
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="ensemble">4. Ensemble Learning</h1>
+            
+            <div class="section">
+                <p>Ensemble methods combine multiple machine learning models (called base learners) to create a single, highly robust model, often achieving superior predictive performance compared to any single constituent model.</p>
+
+                <h2>Basic Combining Techniques</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>Model Type</th>
+                            <th>Combination Method</th>
+                            <th>Application</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Max Voting (Hard)</td>
+                            <td>Classification</td>
+                            <td>Takes a simple majority vote of all model predictions.</td>
+                            <td>Useful when individual models have distinct strengths.</td>
+                        </tr>
+                        <tr>
+                            <td>Averaging (Soft)</td>
+                            <td>Regression/Classification</td>
+                            <td>Takes the average of individual predictions (regression) or the average of predicted probabilities (classification).</td>
+                            <td>Effective when minimizing variance is a priority.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Parallel Ensemble Methods (Bagging)</h2>
+                <p>Bagging (Bootstrap Aggregating) aims to reduce variance and prevent overfitting by training base learners independently and in parallel.</p>
+                
+                <div class="note">
+                    <strong>Mechanism:</strong>
+                    <ol>
+                        <li>Create multiple new training datasets by bootstrap sampling (sampling with replacement) from the original data.</li>
+                        <li>Train a base learner (often a Decision Tree) on each new dataset.</li>
+                        <li>Combine predictions via averaging (regression) or voting (classification).</li>
+                    </ol>
+                </div>
+
+                <h3>Random Forest</h3>
+                <div class="example">
+                    An extension of Bagging for Decision Trees. It introduces <strong>feature randomness</strong> by only considering a random subset of features at each node split. This decorrelates the trees, further reducing variance and preventing all trees from becoming too similar.
+                </div>
+
+                <h2>Sequential Ensemble Methods (Boosting)</h2>
+                <p>Boosting aims to reduce bias by training base learners sequentially. Each new learner focuses on correcting the errors (residuals) of the previous one.</p>
+
+                <h3>AdaBoost (Adaptive Boosting)</h3>
+                <ul>
+                    <li>Starts by assigning equal weights to all training instances.</li>
+                    <li>Trains a weak learner (usually a stump - a single-split tree).</li>
+                    <li>Increases the weight of misclassified instances and decreases the weight of correctly classified ones.</li>
+                    <li>The next learner is trained to focus on the now-heavily-weighted misclassified instances.</li>
+                    <li>The final prediction is a weighted sum of all weak learners.</li>
+                </ul>
+
+                <h3>Gradient Boosting Machine (GBM)</h3>
+                <p>Instead of re-weighting data points, GBM trains subsequent learners to predict the residuals (the negative gradient of the loss function) from the previous model's predictions. The final model is an additive model where each new prediction is added to the ensemble's current prediction.</p>
+
+                <h3>XGBoost (Extreme Gradient Boosting)</h3>
+                <p>An advanced, optimized implementation of Gradient Boosting.</p>
+                <div class="example">
+                    <strong>Key Features:</strong> Uses both first and second-order derivatives (Hessian matrix) for superior optimization; includes L1 and L2 regularization to prevent overfitting; supports parallel processing; and handles missing data internally. It is renowned for its speed and performance.
+                </div>
+
+                <h2>Stacking (Stacked Generalization)</h2>
+                <div class="note">
+                    <strong>Mechanism:</strong>
+                    <ol>
+                        <li>Train diverse Level 0 Models (e.g., SVM, KNN, Random Forest) on the training data.</li>
+                        <li>Use the predictions of these Level 0 models as the input features for a final Level 1 Meta-Learner (e.g., Logistic Regression or a shallow Decision Tree).</li>
+                        <li>The meta-learner learns how to best combine the predictions of the base models.</li>
+                    </ol>
+                </div>
+
+                <h2>Bagging vs Boosting</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Differentiating Factor</th>
+                            <th>Bagging (e.g., Random Forest)</th>
+                            <th>Boosting (e.g., AdaBoost, XGBoost)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mechanism</td>
+                            <td>Parallel. Models are trained independently and simultaneously.</td>
+                            <td>Sequential. Models are trained iteratively, where each subsequent model depends on the previous one.</td>
+                        </tr>
+                        <tr>
+                            <td>Objective</td>
+                            <td>To reduce Variance (overfitting).</td>
+                            <td>To reduce Bias (underfitting) and convert weak learners into strong ones.</td>
+                        </tr>
+                        <tr>
+                            <td>Model Weighting</td>
+                            <td>All base learners (e.g., trees) are typically given equal weight in the final prediction.</td>
+                            <td>Learners are weighted based on their performance; more accurate learners get a higher weight.</td>
+                        </tr>
+                        <tr>
+                            <td>Data Handling</td>
+                            <td>Uses Bootstrap Samples (sampling with replacement) to create independent subsets for each model.</td>
+                            <td>Focuses on the misclassified or high-error instances from the previous iteration by re-weighting or predicting residuals.</td>
+                        </tr>
+                        <tr>
+                            <td>Base Learner</td>
+                            <td>Usually complex, high-variance models (e.g., deep, unpruned Decision Trees).</td>
+                            <td>Usually simple, low-complexity models (e.g., decision stumps or shallow trees).</td>
+                        </tr>
+                        <tr>
+                            <td>Final Result</td>
+                            <td>A single robust model that averages the predictions from multiple high-variance, low-bias models.</td>
+                            <td>A series of weak, low-bias models that are incrementally combined to form a single, highly accurate model.</td>
+                        </tr>
+                        <tr>
+                            <td>Computational</td>
+                            <td>Highly amenable to parallelization, making training faster.</td>
+                            <td>Must be trained sequentially, limiting parallelization.</td>
+                        </tr>
+                        <tr>
+                            <td>Prone To</td>
+                            <td>Less prone to overfitting than a single decision tree, but can still overfit if the base trees are too correlated.</td>
+                            <td>Highly prone to overfitting if the number of iterations (learners) is too large.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="hyperparameter">5. Hyperparameter Tuning, Model Evaluation & Pipelines</h1>
+            
+            <div class="section">
+                <h2>Model Evaluation and Data Integrity</h2>
+                
+                <h3>Cross-Validation (K-Fold)</h3>
+                <div class="example">
+                    <strong>Mechanism:</strong> The dataset is partitioned into K equal-sized folds. The model is trained K times, each time using K-1 folds for training and the remaining fold for validation.<br><br>
+                    <strong>Benefit:</strong> Provides a far more robust estimate of the model's true generalization performance than a single train/test split by ensuring every data point is used exactly once for validation.
+                </div>
+
+                <h3>Handling Class Imbalance</h3>
+                <ul>
+                    <li><strong>Oversampling:</strong> The most popular technique is SMOTE (Synthetic Minority Over-sampling Technique), which creates synthetic examples for the minority class based on feature space similarity to its nearest neighbors.</li>
+                    <li><strong>Under-sampling:</strong> Removing samples from the majority class. Techniques like Tomek Links or NearMiss help to clean the data and improve class balance.</li>
+                </ul>
+
+                <h3>Regularization Models</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Regularization</th>
+                            <th>Penalty Term</th>
+                            <th>Effect</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ridge (L2)</td>
+                            <td>λΣβᵢ²</td>
+                            <td>Shrinks all coefficients toward zero, reducing the magnitude but rarely setting them to zero. Good for preventing multicollinearity.</td>
+                        </tr>
+                        <tr>
+                            <td>Lasso (L1)</td>
+                            <td>λΣ|βᵢ|</td>
+                            <td>Shrinks coefficients and forces coefficients of less important features to be exactly zero (feature selection).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Hyperparameter Tuning Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Search Strategy</th>
+                            <th>Efficiency & Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Grid Search</td>
+                            <td>Exhaustively searches all combinations within a predefined grid.</td>
+                            <td>Guarantees finding the best set of hyperparameters from the defined space, but is extremely slow and computationally expensive.</td>
+                        </tr>
+                        <tr>
+                            <td>Random Search</td>
+                            <td>Samples a fixed number of combinations randomly from the search space.</td>
+                            <td>Often finds a near-optimal solution much faster than Grid Search, as parameters are often not equally important.</td>
+                        </tr>
+                        <tr>
+                            <td>Bayesian Optimization</td>
+                            <td>Builds a probabilistic model (Surrogate Model, usually Gaussian Process) of the objective function. It uses this model to intelligently choose the next set of hyperparameters to evaluate.</td>
+                            <td>The most efficient method, minimizing the number of model trainings required to find the optimum.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>The ML Pipeline Concept</h2>
+                <p>An ML Pipeline is a sequence of estimators and transformers that ensures the data preparation steps (like scaling and imputation) are correctly applied to the data before modeling, which is crucial for preventing data leakage.</p>
+                
+                <div class="note">
+                    <strong>Data Leakage Prevention:</strong> The pipeline ensures that operations like fitting a scaler are done only on the training data and then the learned transformation is applied to both training and test data. Without a pipeline, a scaler could mistakenly learn parameters from the entire dataset, leading to inflated performance estimates.<br><br>
+                    <strong>Workflow Automation:</strong> It packages the entire workflow into a single object, simplifying deployment and ensuring consistency between training and prediction environments.
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="reinforcement">6. Reinforcement Learning (RL)</h1>
+            
+            <div class="section">
+                <p>Reinforcement Learning is a paradigm where an Agent learns how to behave in an Environment by performing actions and observing the resulting Rewards and States.</p>
+
+                <h2>Markov Decision Process (MDP)</h2>
+                <p>The MDP is the mathematical framework for modeling sequential decision-making in RL.</p>
+                
+                <div class="example">
+                    <strong>The Markov Property:</strong> The core assumption is that the future state depends only on the current state and the action taken, not on the entire history of observations.<br>
+                    P(S_{t+1} | S_t, A_t) = P(S_{t+1} | S_t, A_t, S_{t-1}, A_{t-1}, ...)
+                </div>
+
+                <div class="note">
+                    <strong>Components of an MDP:</strong>
+                    <ul>
+                        <li><strong>S:</strong> A set of States.</li>
+                        <li><strong>A:</strong> A set of Actions.</li>
+                        <li><strong>P:</strong> State Transition Probability P(S_{t+1} | S_t, A_t).</li>
+                        <li><strong>R:</strong> Reward Function R(S_t, A_t).</li>
+                        <li><strong>γ:</strong> Discount Factor (to prioritize immediate vs. future rewards).</li>
+                    </ul>
+                </div>
+
+                <h2>The Bellman Equation and Value Functions</h2>
+                <p>The agent's goal is to find an optimal policy (π*) that maximizes the expected return (cumulative discounted reward). The Bellman Equation is the key to solving this:</p>
+                
+                <div class="formula">
+                    <strong>Optimal Value Function V*(s):</strong> The maximum expected return starting from state s.<br>
+                    V*(s) = max_a Σ_{s'} P(s'|s,a)[R(s,a,s') + γV*(s')]
+                </div>
+                
+                <div class="formula">
+                    <strong>Optimal Q-Function Q*(s,a):</strong> The maximum expected return achieved by taking action a in state s and thereafter following the optimal policy.<br>
+                    Q*(s,a) = Σ_{s'} P(s'|s,a)[R(s,a,s') + γ max_{a'} Q*(s',a')]
+                </div>
+
+                <h2>Key RL Algorithms (Temporal Differencing)</h2>
+                <p>TD learning methods are highly efficient as they learn from experience without a model of the environment and can update estimates based on subsequent estimates (bootstrapping).</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Policy Type</th>
+                            <th>Learning Mechanism</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Q-Learning</td>
+                            <td>Off-Policy</td>
+                            <td>Learns the optimal Q-function Q* by using the maximum max_{a'} Q(S_{t+1}, a') value in the update. It evaluates the best possible action regardless of the action actually taken.</td>
+                        </tr>
+                        <tr>
+                            <td>SARSA</td>
+                            <td>On-Policy</td>
+                            <td>Learns the Q-function for the policy currently being followed. The update uses the value Q(S_{t+1}, A_{t+1}) where A_{t+1} is the action actually taken in the next state S_{t+1}.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Monte Carlo Methods (MC)</h3>
+                <p>These methods estimate the value of states or actions by averaging the returns (total rewards) observed from complete episodes. They have high variance but do not suffer from bootstrapping errors.</p>
+
+                <h2>Sequential Decision-Making</h2>
+                <p>All of the above methods (MDPs, Bellman, Q-Learning, SARSA) are used to solve problems where the outcome is a sequence of actions rather than a single classification or regression prediction. The challenge is the <strong>Credit Assignment Problem:</strong> determining which actions (early or late) in the sequence are responsible for a large, delayed reward. RL solves this using the Bellman Equation and the discount factor (γ).</p>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Hinglish Content -->
+        <div class="hinglish-content hinglish">
+            <h1 id="feature-engineering-hi">1. Feature Engineering (Hinglish)</h1>
+            
+            <div class="section">
+                <h2>Definition</h2>
+                <p><span class="highlight">Feature Engineering</span> ek aisa process hai jisme hum domain knowledge use karke raw data se naye features create karte hain ya existing features ko modify karte hain taaki machine learning model ki performance improve ho sake. Ye input data features ko prepare karne ka art aur science hai jo underlying problem ko best represent kar sake.</p>
+            </div>
+
+            <div class="section">
+                <h2>Feature Engineering Ki Zaroorat</h2>
+                <ul>
+                    <li><strong>Model Performance Badhata Hai:</strong> Ache se engineered features model ko clear signals dete hain, jisse simple algorithms bhi raw data par complex algorithms se better results de sakte hain.</li>
+                    <li><strong>Data Quality Improve Karta Hai:</strong> Ye missing values aur outliers jaise imperfections ko handle karta hai, data integrity ensure karta hai.</li>
+                    <li><strong>Interpretability Enhance Karta Hai:</strong> Meaningful, consolidated features banane se model ke decisions ko samajhna aur explain karna aasan ho jata hai.</li>
+                    <li><strong>Algorithmic Constraints Address Karta Hai:</strong> Feature scaling jaise techniques distance-based (KNN, SVM) aur gradient-descent-based (Neural Networks, Linear Regression) algorithms ke liye zaroori hain.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Feature Engineering Techniques</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Technique</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Cleaning</td>
+                            <td>Imputation</td>
+                            <td>Missing values ko statistical methods (mean, median, mode) ya sophisticated models (KNN, MICE) se fill karna.</td>
+                            <td>Missing 'Age' value ko dataset ki median age se replace karna.</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Feature Construction</td>
+                            <td>Aggregation</td>
+                            <td>Multiple features ko combine karke ek single, zyada informative feature banana.</td>
+                            <td>Individual transaction records ko 'Total Customer Spend' feature mein convert karna.</td>
+                        </tr>
+                        <tr>
+                            <td>Binning/Discretization</td>
+                            <td>Continuous numerical values ko discrete bins ya categories mein group karna.</td>
+                            <td>'Age' (1-100) ko 'Child', 'Adult', 'Senior' jaise categories mein convert karna.</td>
+                        </tr>
+                        <tr>
+                            <td>Polynomial Features</td>
+                            <td>Existing features ke interaction terms ya powers create karke non-linearity introduce karna.</td>
+                            <td>Agar X₁ aur X₂ features hain, toh X₁ × X₂ ya X₁² add karna.</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3">Data Transformation</td>
+                            <td>Scaling/Normalization</td>
+                            <td>Numerical features ke scale ko standard range mein adjust karna.</td>
+                            <td>Features ko mean 0 aur standard deviation 1 par standardize karna.</td>
+                        </tr>
+                        <tr>
+                            <td>Encoding</td>
+                            <td>Categorical variables ko numerical format mein convert karna.</td>
+                            <td>Colors (Red, Blue) ke liye One-Hot Encoding ya Size (Small, Medium, Large) ke liye Label Encoding.</td>
+                        </tr>
+                        <tr>
+                            <td>Outlier Handling</td>
+                            <td>Extreme values ko transform ya remove karna jo model training ko skew kar sakte hain.</td>
+                            <td>Income jaise heavily skewed features par Log Transformation apply karna.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Advanced Data Preprocessing</h2>
+                
+                <h3>Missing Data Handle Karna</h3>
+                <div class="example">
+                    <strong>Purpose:</strong> Data integrity maintain karna aur model failure prevent karna.
+                    <ul>
+                        <li><strong>Imputation:</strong> Mean/Median (normally distributed/skewed data ke liye), Mode (categorical ke liye), ya KNN Imputer aur MICE (Multiple Imputation by Chained Equations) jaise advanced methods.</li>
+                        <li><strong>Deletion:</strong> Row/Column removal, sirf tab use karte hain jab data loss minimal ho.</li>
+                    </ul>
+                </div>
+
+                <h3>Feature Scaling</h3>
+                <div class="note">
+                    <strong>Purpose:</strong> Different features ke contribution ko normalize karna, especially distance-based aur gradient-based algorithms ke liye.
+                </div>
+                
+                <div class="formula">
+                    <strong>Standardization (Z-Score):</strong><br>
+                    x' = (x - μ) / σ<br>
+                    Data ko μ=0 aur σ=1 par transform karta hai. Neural Networks, SVM, aur Linear Regression ke liye ideal.
+                </div>
+                
+                <div class="formula">
+                    <strong>Normalization (Min-Max):</strong><br>
+                    x' = (x - x_min) / (x_max - x_min)<br>
+                    Data ko fixed range (usually [0, 1]) mein scale karta hai. Image processing ya KNN jaise algorithms ke liye useful.
+                </div>
+
+                <h3>Encoding</h3>
+                <ul>
+                    <li><strong>One-Hot Encoding:</strong> Har category ke liye ek naya binary column create karta hai. Non-ordinal features ke liye best (jaise color).</li>
+                    <li><strong>Label Encoding:</strong> Har category ko ek integer assign karta hai. Ordinal features ke liye use hota hai (jaise size: small=1, medium=2).</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="feature-selection-hi">2. Feature Selection Methodologies (Hinglish)</h1>
+            
+            <div class="section">
+                <p>Feature selection ka aim optimal subset of relevant features dhoondhna hai, jisse overfitting reduce ho, model interpretability improve ho, aur training fast ho.</p>
+                
+                <h2>A. Filter-Based Approaches</h2>
+                <p>Ye methods features ko statistical metrics ke basis par rank karte hain.</p>
+                <ul>
+                    <li><strong>Information Gain / Mutual Information:</strong> Do random variables ke beech dependency quantify karta hai. Higher mutual information matlab feature target variable ke liye zyada predictive hai.</li>
+                    <li><strong>Chi-Square Test (χ²):</strong> Do categorical variables ki independence assess karta hai. Large χ² statistic suggest karta hai ki feature aur target dependent hain.</li>
+                    <li><strong>Fisher's Score:</strong> Inter-class variance aur intra-class variance ka ratio calculate karta hai. Higher scores better feature separability indicate karte hain.</li>
+                </ul>
+
+                <h2>B. Wrapper-Based Methods</h2>
+                <p>Ye methods feature selection process ko model ke around wrap karte hain, uski performance ko evaluation criterion ke taur par use karte hain.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Process</th>
+                            <th>Computational Complexity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Forward Selection</td>
+                            <td>Empty set of features se start karke greedily wo feature add karta hai jo sabse zyada performance improvement deta hai.</td>
+                            <td>O(N²) worst case mein, jahan N features ki number hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Backward Elimination</td>
+                            <td>Sabhi features se start karke iteratively wo feature remove karta hai jiska removal sabse kam performance drop deta hai.</td>
+                            <td>Forward Selection jaisa, model complexity par depend karta hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Recursive Feature Elimination (RFE)</td>
+                            <td>Iterative process hai jisme model train hota hai aur features importance ke hisaab se rank hote hain. Kam important features prune ho jate hain.</td>
+                            <td>Model ko multiple times retrain karna padta hai, computationally intensive hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Exhaustive Feature Selection</td>
+                            <td>Sabhi possible combinations of features check karta hai. N features ke liye 2^N - 1 subsets hote hain.</td>
+                            <td>O(2^N) - Bade N ke liye impractical (jaise N=40 computationally impossible hai).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>C. Embedded-Based Methods</h2>
+                <p>Ye techniques feature selection ko seedha model training mein integrate karti hain.</p>
+                <ul>
+                    <li><strong>Regularization (Lasso):</strong> L1 penalty term Lasso Regression mein kam impactful features ke coefficients ko exactly zero kar deta hai.</li>
+                    <li><strong>Tree-based Algorithms (Random Forest/XGBoost):</strong> Ye models inherently feature importance calculate karte hain.</li>
+                </ul>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="dimensionality-hi">3. Dimensionality Reduction (Hinglish)</h1>
+            
+            <div class="section">
+                <p>Dimensionality reduction variables ki number reduce karne ka process hai ek low-dimensional space dhoondhke jo high-dimensional data ki essential characteristics preserve kare.</p>
+
+                <h2>Principal Component Analysis (PCA)</h2>
+                <div class="example">
+                    <strong>Goal:</strong> Lower-dimensional set of bases dhoondhna jo data mein maximum possible variance capture kare.<br><br>
+                    <strong>Mechanism:</strong> Ye data ka covariance matrix calculate karke eigenvectors aur eigenvalues dhoondh ta hai. Eigenvectors naye axes ki direction define karte hain, aur eigenvalues un axes ke along variance ki magnitude indicate karte hain.<br><br>
+                    <strong>Nature:</strong> Unsupervised method hai, matlab ye data points ke class labels ko ignore karta hai.<br><br>
+                    <strong>Application:</strong> Noise reduction, model training speed up karna, aur visualization simplify karna.
+                </div>
+
+                <h2>Linear Discriminant Analysis (LDA)</h2>
+                <div class="example">
+                    <strong>Goal:</strong> Ek lower-dimensional subspace dhoondhna jo different classes ke beech separation maximize kare.<br><br>
+                    <strong>Mechanism:</strong> Ye between-class scatter maximize karta hai aur simultaneously within-class scatter minimize karta hai.<br><br>
+                    <strong>Nature:</strong> Supervised method hai, kyunki ye explicitly class labels use karta hai axes calculate karte waqt.<br><br>
+                    <strong>Constraint:</strong> Maximum number of resulting dimensions C-1 ho sakte hain, jahan C classes ki number hai.
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="ensemble-hi">4. Ensemble Learning (Hinglish)</h1>
+            
+            <div class="section">
+                <p>Ensemble methods multiple machine learning models (base learners kehte hain) ko combine karke ek single, highly robust model create karte hain.</p>
+
+                <h2>Basic Combining Techniques</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>Model Type</th>
+                            <th>Combination Method</th>
+                            <th>Application</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Max Voting (Hard)</td>
+                            <td>Classification</td>
+                            <td>Sabhi model predictions ka simple majority vote leta hai.</td>
+                            <td>Jab individual models ke distinct strengths ho.</td>
+                        </tr>
+                        <tr>
+                            <td>Averaging (Soft)</td>
+                            <td>Regression/Classification</td>
+                            <td>Individual predictions ka average leta hai.</td>
+                            <td>Jab variance minimize karna priority ho.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Parallel Ensemble Methods (Bagging)</h2>
+                <p>Bagging (Bootstrap Aggregating) variance reduce karne aur overfitting prevent karne ke liye base learners ko independently aur parallel mein train karta hai.</p>
+                
+                <div class="note">
+                    <strong>Mechanism:</strong>
+                    <ol>
+                        <li>Original data se bootstrap sampling (sampling with replacement) karke multiple naye training datasets create karo.</li>
+                        <li>Har naye dataset par ek base learner (aksar Decision Tree) train karo.</li>
+                        <li>Predictions ko averaging (regression) ya voting (classification) se combine karo.</li>
+                    </ol>
+                </div>
+
+                <h3>Random Forest</h3>
+                <div class="example">
+                    Bagging ka ek extension hai Decision Trees ke liye. Feature randomness introduce karta hai by har node split par sirf features ka random subset consider karke. Isse trees decorrelate ho jate hain.
+                </div>
+
+                <h2>Sequential Ensemble Methods (Boosting)</h2>
+                <p>Boosting bias reduce karne ke liye base learners ko sequentially train karta hai. Har naya learner previous learner ki errors (residuals) ko correct karne par focus karta hai.</p>
+
+                <h3>AdaBoost (Adaptive Boosting)</h3>
+                <ul>
+                    <li>Sabhi training instances ko equal weights assign karke start karta hai.</li>
+                    <li>Ek weak learner (usually stump) train karta hai.</li>
+                    <li>Misclassified instances ka weight badhata hai aur correctly classified ka kam karta hai.</li>
+                    <li>Agla learner in heavily-weighted misclassified instances par focus karta hai.</li>
+                    <li>Final prediction sabhi weak learners ka weighted sum hota hai.</li>
+                </ul>
+
+                <h3>Gradient Boosting Machine (GBM)</h3>
+                <p>Data points ko re-weight karne ki jagah, GBM subsequent learners ko previous model's predictions se residuals predict karne ke liye train karta hai.</p>
+
+                <h3>XGBoost (Extreme Gradient Boosting)</h3>
+                <div class="example">
+                    <strong>Key Features:</strong> First aur second-order derivatives (Hessian matrix) use karta hai; L1 aur L2 regularization include karta hai; parallel processing support karta hai; aur missing data ko internally handle karta hai.
+                </div>
+
+                <h2>Stacking (Stacked Generalization)</h2>
+                <div class="note">
+                    <strong>Mechanism:</strong>
+                    <ol>
+                        <li>Diverse Level 0 Models (jaise SVM, KNN, Random Forest) ko training data par train karo.</li>
+                        <li>In Level 0 models ki predictions ko input features ke taur par final Level 1 Meta-Learner ke liye use karo.</li>
+                        <li>Meta-learner seekhta hai ki base models ki predictions ko kaise best combine kare.</li>
+                    </ol>
+                </div>
+
+                <h2>Bagging vs Boosting</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Differentiating Factor</th>
+                            <th>Bagging</th>
+                            <th>Boosting</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mechanism</td>
+                            <td>Parallel. Models independently aur simultaneously train hote hain.</td>
+                            <td>Sequential. Models iteratively train hote hain.</td>
+                        </tr>
+                        <tr>
+                            <td>Objective</td>
+                            <td>Variance (overfitting) reduce karna.</td>
+                            <td>Bias (underfitting) reduce karna.</td>
+                        </tr>
+                        <tr>
+                            <td>Model Weighting</td>
+                            <td>Sabhi base learners ko typically equal weight milta hai.</td>
+                            <td>Learners ko unki performance ke basis par weight milta hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Data Handling</td>
+                            <td>Bootstrap Samples use karta hai.</td>
+                            <td>Misclassified instances par focus karta hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Base Learner</td>
+                            <td>Complex, high-variance models (deep trees).</td>
+                            <td>Simple, low-complexity models (stumps).</td>
+                        </tr>
+                        <tr>
+                            <td>Computational</td>
+                            <td>Highly parallelizable, training faster.</td>
+                            <td>Sequentially train hota hai.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="hyperparameter-hi">5. Hyperparameter Tuning & Model Evaluation (Hinglish)</h1>
+            
+            <div class="section">
+                <h2>Model Evaluation and Data Integrity</h2>
+                
+                <h3>Cross-Validation (K-Fold)</h3>
+                <div class="example">
+                    <strong>Mechanism:</strong> Dataset ko K equal-sized folds mein partition karte hain. Model K times train hota hai.<br><br>
+                    <strong>Benefit:</strong> Single train/test split se kaafi zyada robust estimate deta hai model ki true generalization performance ka.
+                </div>
+
+                <h3>Class Imbalance Handle Karna</h3>
+                <ul>
+                    <li><strong>Oversampling:</strong> SMOTE (Synthetic Minority Over-sampling Technique) sabse popular technique hai.</li>
+                    <li><strong>Under-sampling:</strong> Majority class se samples remove karna. Tomek Links ya NearMiss jaise techniques.</li>
+                </ul>
+
+                <h3>Regularization Models</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Regularization</th>
+                            <th>Penalty Term</th>
+                            <th>Effect</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ridge (L2)</td>
+                            <td>λΣβᵢ²</td>
+                            <td>Sabhi coefficients ko zero ki taraf shrink karta hai. Multicollinearity prevent karne ke liye accha.</td>
+                        </tr>
+                        <tr>
+                            <td>Lasso (L1)</td>
+                            <td>λΣ|βᵢ|</td>
+                            <td>Coefficients shrink karta hai aur kam important features ke coefficients ko exactly zero par force karta hai.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Hyperparameter Tuning Methods</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Search Strategy</th>
+                            <th>Efficiency & Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Grid Search</td>
+                            <td>Predefined grid ke andar sabhi combinations ko exhaustively search karta hai.</td>
+                            <td>Best hyperparameters dhoondhne ki guarantee, lekin bahut slow aur expensive.</td>
+                        </tr>
+                        <tr>
+                            <td>Random Search</td>
+                            <td>Search space se randomly combinations sample karta hai.</td>
+                            <td>Aksar Grid Search se kaafi fast near-optimal solution dhoondh leta hai.</td>
+                        </tr>
+                        <tr>
+                            <td>Bayesian Optimization</td>
+                            <td>Probabilistic model build karta hai aur intelligently next hyperparameters choose karta hai.</td>
+                            <td>Sabse efficient method, minimum trainings mein optimum dhoondh leta hai.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>ML Pipeline Concept</h2>
+                <p>ML Pipeline estimators aur transformers ka ek sequence hai jo ensure karta hai ki data preparation steps correctly apply ho.</p>
+                
+                <div class="note">
+                    <strong>Data Leakage Prevention:</strong> Pipeline ensure karta hai ki operations jaise scaler fitting sirf training data par ho.<br><br>
+                    <strong>Workflow Automation:</strong> Ye entire workflow ko single object mein package karta hai.
+                </div>
+            </div>
+
+            <div class="page-break"></div>
+
+            <h1 id="reinforcement-hi">6. Reinforcement Learning (Hinglish)</h1>
+            
+            <div class="section">
+                <p>Reinforcement Learning ek aisa paradigm hai jisme ek Agent Environment mein behave karna seekhta hai actions perform karke aur resulting Rewards aur States observe karke.</p>
+
+                <h2>Markov Decision Process (MDP)</h2>
+                <p>MDP RL mein sequential decision-making ko model karne ka mathematical framework hai.</p>
+                
+                <div class="example">
+                    <strong>Markov Property:</strong> Core assumption ye hai ki future state sirf current state aur action par depend karta hai, observations ki poori history par nahi.
+                </div>
+
+                <div class="note">
+                    <strong>Components:</strong>
+                    <ul>
+                        <li><strong>S:</strong> States ka set</li>
+                        <li><strong>A:</strong> Actions ka set</li>
+                        <li><strong>P:</strong> State Transition Probability</li>
+                        <li><strong>R:</strong> Reward Function</li>
+                        <li><strong>γ:</strong> Discount Factor</li>
+                    </ul>
+                </div>
+
+                <h2>Bellman Equation and Value Functions</h2>
+                <p>Agent ka goal optimal policy (π*) dhoondhna hai jo expected return maximize kare.</p>
+                
+                <div class="formula">
+                    <strong>Optimal Value Function V*(s):</strong> State s se start karke maximum expected return.
+                </div>
+                
+                <div class="formula">
+                    <strong>Optimal Q-Function Q*(s,a):</strong> State s mein action a leke achieve hone wala maximum expected return.
+                </div>
+
+                <h2>Key RL Algorithms</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Algorithm</th>
+                            <th>Policy Type</th>
+                            <th>Learning Mechanism</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Q-Learning</td>
+                            <td>Off-Policy</td>
+                            <td>Optimal Q-function seekhta hai maximum value use karke. Best possible action evaluate karta hai.</td>
+                        </tr>
+                        <tr>
+                            <td>SARSA</td>
+                            <td>On-Policy</td>
+                            <td>Currently followed policy ke liye Q-function seekhta hai. Actually taken action ka value use karta hai.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Monte Carlo Methods</h3>
+                <p>Ye methods complete episodes se observe kiye gaye returns ko average karke values estimate karte hain.</p>
+
+                <h2>Sequential Decision-Making</h2>
+                <p>Challenge: Credit Assignment Problem - ye determine karna ki sequence mein konse actions large, delayed reward ke liye responsible hain. RL ise Bellman Equation aur discount factor use karke solve karta hai.</p>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+            <h2>End of Document</h2>
+            <p>ML Pipeline - Complete Guide (English & Hinglish)</p>
+            <p>Created: 2026</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleLanguage() {
+            const englishContent = document.querySelector('.english-content');
+            const hinglishContent = document.querySelector('.hinglish-content');
+            const toggleBtn = document.querySelector('.language-toggle');
+            
+            if (hinglishContent.style.display === 'none' || !hinglishContent.style.display) {
+                englishContent.style.display = 'none';
+                hinglishContent.style.display = 'block';
+                toggleBtn.textContent = '🌐 Switch to English';
+            } else {
+                englishContent.style.display = 'block';
+                hinglishContent.style.display = 'none';
+                toggleBtn.textContent = '🌐 Switch to Hinglish';
+            }
+        }
+    </script>
+</body>
+</html>
